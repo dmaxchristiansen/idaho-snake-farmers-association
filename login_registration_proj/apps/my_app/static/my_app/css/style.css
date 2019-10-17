@@ -1,0 +1,26 @@
+.messages{
+    color: red;
+    text-align: center;
+    background-color: bisque;
+}
+.message-heading{
+    margin-left: 20px;
+}
+.message-text{
+    margin-left: 40px;
+    font-size: larger;
+    font-weight: bold;
+}
+.comment-heading{
+    margin-left: 60px;
+}
+.comment-text{
+    margin-left: 80px;
+    font-weight: bold;
+}
+.reading-snake{
+    margin-bottom:14px;
+}
+.speaker-name{
+    font-weight: bold;
+}

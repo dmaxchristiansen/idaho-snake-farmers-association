@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'my_app/css/style.css' %}">    
+    <title>ISFA Message Board</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'my_app/images/snake-icon.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+            ISFA
+        </a>
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-primary" href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <h1> ISFA Message Board</h1>
+        <h3>What is on you mind today {{user.first_name}}?</h3>
+        <form action="/post_message" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control" type="text" name="message" cols="30" rows="4"></textarea>
+            </div>
+            <div class="d-flex justify-content-end form-group">
+                <button type="submit" class="btn btn-primary">Post</button>
+            </div>
+        </form>
+    </div>
+    <div class="container-fluid">
+        {% for message in messages.all reversed %}
+        <p class="message-heading">@ {{message.created_at}} <span class="speaker-name">{{message.user.first_name}} {{message.user.last_name}}</span> posted:</p>
+        <p class="message-text">{{message.message}}</p>
+        {% for comment in message.message_comments.all reversed %}
+        <p class="comment-heading">@ {{comment.created_at}} <span class="speaker-name">{{comment.user.first_name}} {{comment.user.last_name}}</span> commented:</p>
+        <p class="comment-text">{{comment.comment}}</p>
+        {% endfor %}
+        <form action="/post_comment/{{message.id}}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control" type="text" name="comment"></textarea>
+            </div>
+            <div class="d-flex justify-content-end form-group">
+                <button type="submit" class="btn btn-primary">Comment</button>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    <div class="container-fluid">
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
